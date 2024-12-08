@@ -2,6 +2,8 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions.Comparers;
+using UnityEngine.UIElements;
 
 public class GameControl : MonoBehaviour
 {
@@ -13,9 +15,18 @@ public class GameControl : MonoBehaviour
     [SerializeField] GameObject mark;
     [SerializeField] float reapet_time;
 
+    [Header("총알")]
+    [SerializeField] GameObject ball;
+    [SerializeField] Transform StartPosition;
+    [SerializeField] float ball_speed;
+    [SerializeField] float differ_angle;
+    [SerializeField] float curtime;
+    [SerializeField] float max_time;
+
     void Start()
     {
         InvokeRepeating("enemyaround", 0, 0.2f);
+        curtime = max_time;
     }
     void Update()
     {
@@ -30,6 +41,20 @@ public class GameControl : MonoBehaviour
             Vector3 angle = Quaternion.RotateTowards(player.transform.rotation, dir, 200 * Time.deltaTime).eulerAngles;
 
             player.transform.rotation = Quaternion.Euler(0, angle.y, 0);
+
+            Quaternion d_angle = Quaternion.Euler(0, dir.eulerAngles.y, 0);
+
+            if (Quaternion.Angle(player.transform.rotation, d_angle) < differ_angle)
+            {
+                curtime -= Time.deltaTime;
+                if (curtime <= 0)
+                {
+                    var a = Instantiate(ball, StartPosition.position, StartPosition.rotation);
+                    a.GetComponent<Rigidbody>().AddForce(StartPosition.transform.forward * ball_speed);
+                    Destroy(a.gameObject, 2.0f);
+                    curtime = max_time;
+                }
+            }
         }
     }
 
