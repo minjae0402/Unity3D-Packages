@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 
     //컬렉션 : 리스트, 큐, 스택, 해시이블, 디너리, 어레이리스트
 
-    //AttayList
+    //ArrayList
     //List
     //HashTable
 
