@@ -1,15 +1,18 @@
-using UnityEditor.MPE;
 using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] GameObject go_Camera;
+    private Rigidbody myRigid;
+
+    void Start()
+    {
+        myRigid = GetComponent<Rigidbody>();
+    }
     void Update()
     {
-        // if (Input.GetKey(KeyCode.W))
-        // {
-        //     this.transform.LookAt(go_Camera.transform.position);
-        // }
-        transform.RotateAround(go_Camera.transform.position, Vector3.up, 100 * Time.deltaTime);
+        if (Input.GetKey(KeyCode.W))
+        {
+            myRigid.angularVelocity = new Vector3(1, 0, 0);
+        }
     }
 }
